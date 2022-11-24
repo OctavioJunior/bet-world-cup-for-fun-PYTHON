@@ -109,7 +109,7 @@ with col3:
     st.metric("Empate", prob[1])
     st.metric("Odd", round((100/float(prob[1])), 2))
 with col4:
-    st.metric(team2, prob[0])
+    st.metric(team2, prob[2])
     st.metric("Odd", round((100/float(prob[2])), 2))
 col5.image(teamsStats.loc[team2, 'LinkBandeiraGrande'])
 st.markdown('---')
