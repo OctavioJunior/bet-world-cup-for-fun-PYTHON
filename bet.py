@@ -10,9 +10,9 @@ st.set_page_config(
 st.title("Previsão dos jogos da Copa do Mundo 2022")
 
 teamsStats = pd.read_excel(
-    "data/DadosCopaDoMundoQatar2022.xlsx", sheet_name="selecoes", index_col=0)
+    r"C:\Users\OcJunior\Desktop\PROJETOS ESTUDO\PROJETOS ONLINE\PRECISÕES COPA 22 - PYTHON\previsoes-copa-22-python\data\DadosCopaDoMundoQatar2022.xlsx", sheet_name="selecoes", index_col=0)
 matches = pd.read_excel(
-    "data/DadosCopaDoMundoQatar2022.xlsx", sheet_name="jogos")
+    r"C:\Users\OcJunior\Desktop\PROJETOS ESTUDO\PROJETOS ONLINE\PRECISÕES COPA 22 - PYTHON\previsoes-copa-22-python\data\DadosCopaDoMundoQatar2022.xlsx", sheet_name="jogos")
 rankFifa = teamsStats["PontosRankingFIFA"]
 
 rankMin, rankMax = min(rankFifa), max(rankFifa)
@@ -27,7 +27,7 @@ strength = beta0 + beta1*rankFifa
 def AvgPoisson(team1, team2):
     strengthTeam1 = strength[team1]
     strengthTeam2 = strength[team2]
-    avgGoasl = 2.83
+    avgGoasl = 2.82
     avgGoaslTeam1 = (avgGoasl * strengthTeam1)/(strengthTeam1 + strengthTeam2)
     avgGoaslTeam2 = avgGoasl - avgGoaslTeam1
 
@@ -65,27 +65,30 @@ def ProbabilitiesMatch(team1, team2):
     return output
 
 
-def Match(team1, team2):
-    avgGoaslTeam1, avgGoalsTeam2 = AvgPoisson(team1, team2)
-    goalsTeam1 = int(np.random.poisson(lam=avgGoaslTeam1, size=1))
-    goalsTeam2 = int(np.random.poisson(lam=avgGoalsTeam2, size=1))
-    score = "{}x{}". format(goalsTeam1, goalsTeam2)
+# def Match(team1, team2):
+#     avgGoaslTeam1, avgGoalsTeam2 = AvgPoisson(team1, team2)
+#     goalsTeam1 = int(np.random.poisson(lam=avgGoaslTeam1, size=1))
+#     goalsTeam2 = int(np.random.poisson(lam=avgGoalsTeam2, size=1))
+#     score = "{}x{}". format(goalsTeam1, goalsTeam2)
 
-    return score
+#     return score
 
 
 matches["Vitória"] = None
 matches["Empate"] = None
 matches["Derrota"] = None
 
-for i in range(matches.shape[0]):
-    team1 = matches["seleção1"][i]
-    team2 = matches["seleção2"][i]
-    v, d, l = ProbabilitiesMatch(team1, team2)["probabilidades"]
-    matches.at[i, "Vitória"] = v
-    matches.at[i, "Empate"] = d
-    matches.at[i, "Derrota"] = l
+# for i in range(matches.shape[0]):
+#     team1 = matches["seleção1"][i]
+#     team2 = matches["seleção2"][i]
+#     v, d, l = ProbabilitiesMatch(team1, team2)["probabilidades"]
+#     matches.at[i, "Vitória"] = v
+#     matches.at[i, "Empate"] = d
+#     matches.at[i, "Derrota"] = l
 
+# matches.to_excel("Probabilidades da Copa 2022")
+
+# print(Match("Brasil", "Sérvia"))
 
 listTeamHome = teamsStats.index.tolist()
 listTeamHome.sort()
@@ -113,3 +116,5 @@ with col4:
     st.metric("Odd", round((100/float(prob[2])), 2))
 col5.image(teamsStats.loc[team2, 'LinkBandeiraGrande'])
 st.markdown('---')
+
+print(ProbabilitiesMatch("Brasil", "Sérvia"))
