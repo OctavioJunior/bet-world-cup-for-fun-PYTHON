@@ -10,9 +10,9 @@ st.set_page_config(
 st.title("Previsão dos jogos da Copa do Mundo 2022")
 
 teamsStats = pd.read_excel(
-    "data\DadosCopaDoMundoQatar2022.xlsx", sheet_name="selecoes", index_col=0)
+    "data/DadosCopaDoMundoQatar2022.xlsx", sheet_name="selecoes", index_col=0)
 matches = pd.read_excel(
-    "data\DadosCopaDoMundoQatar2022.xlsx", sheet_name="jogos")
+    "data/DadosCopaDoMundoQatar2022.xlsx", sheet_name="jogos")
 rankFifa = teamsStats["PontosRankingFIFA"]
 
 rankMin, rankMax = min(rankFifa), max(rankFifa)
@@ -117,4 +117,4 @@ with col4:
 col5.image(teamsStats.loc[team2, 'LinkBandeiraGrande'])
 st.markdown('---')
 
-print(ProbabilitiesMatch("Brasil", "Sérvia"))
+# print(ProbabilitiesMatch("Brasil", "Sérvia"))
