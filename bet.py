@@ -10,11 +10,11 @@ st.set_page_config(
 st.title("Previsão dos jogos da Copa do Mundo 2022")
 
 teamsStats = pd.read_excel(
-    "data/DadosCopaDoMundoQatar2022.xlsx", sheet_name="selecoes", index_col=0)
-# r"C:\Users\OcJunior\Desktop\PROJETOS ESTUDO\PROJETOS ONLINE\PRECISÕES COPA 22 - PYTHON\previsoes-copa-22-python\data\DadosCopaDoMundoQatar2022.xlsx", sheet_name="selecoes", index_col=0)
+    # "data/DadosCopaDoMundoQatar2022.xlsx", sheet_name="selecoes", index_col=0)
+    r"C:\Users\OcJunior\Desktop\PROJETOS ESTUDO\PROJETOS ONLINE\PRECISÕES COPA 22 - PYTHON\previsoes-copa-22-python\data\DadosCopaDoMundoQatar2022.xlsx", sheet_name="selecoes", index_col=0)
 matches = pd.read_excel(
-    "data/DadosCopaDoMundoQatar2022.xlsx", sheet_name="jogos")
-# r"C:\Users\OcJunior\Desktop\PROJETOS ESTUDO\PROJETOS ONLINE\PRECISÕES COPA 22 - PYTHON\previsoes-copa-22-python\data\DadosCopaDoMundoQatar2022.xlsx", sheet_name="jogos")
+    # "data/DadosCopaDoMundoQatar2022.xlsx", sheet_name="jogos")
+    r"C:\Users\OcJunior\Desktop\PROJETOS ESTUDO\PROJETOS ONLINE\PRECISÕES COPA 22 - PYTHON\previsoes-copa-22-python\data\DadosCopaDoMundoQatar2022.xlsx", sheet_name="jogos")
 rankFifa = teamsStats["PontosRankingFIFA"]
 
 rankMin, rankMax = min(rankFifa), max(rankFifa)
@@ -54,7 +54,7 @@ def ProbabilitiesMatch(team1, team2):
     loseTeam1 = np.triu(matriz).sum()-np.trace(matriz)
     drawTeam1 = 1 - (victoryTeam1 + loseTeam1)
     probabilities = np.around([victoryTeam1, drawTeam1, loseTeam1], 3)
-    probabilitiesPercent = [f"{100*i:.1f}" for i in probabilities]
+    probabilitiesPercent = [f"{100*i:.0f}" for i in probabilities]
 
     results = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
     matriz = pd.DataFrame(matriz, columns=results, index=results)
@@ -73,15 +73,6 @@ def ProbabilitiesMatch(team1, team2):
               "Resultado": resultado}
 
     return output
-
-
-# def Match(team1, team2):
-#     avgGoaslTeam1, avgGoalsTeam2 = AvgPoisson(team1, team2)
-#     goalsTeam1 = int(np.random.poisson(lam=avgGoaslTeam1, size=1))
-#     goalsTeam2 = int(np.random.poisson(lam=avgGoalsTeam2, size=1))
-#     score = "{}x{}". format(goalsTeam1, goalsTeam2)
-
-#     return score
 
 
 matches["Vitória"] = None
@@ -114,13 +105,13 @@ prob = matches["probabilidades"]
 col1, col2, col3, col4, col5, col6 = st.columns(6)
 col1.image(teamsStats.loc[team1, 'LinkBandeiraGrande'], width=100)
 with col2:
-    st.metric(team1, prob[0])
+    st.metric(team1, f"{prob[0]}%")
     st.metric("Odd", round((100/float(prob[0])), 2))
 with col3:
-    st.metric("Empate", prob[1])
+    st.metric("Empate", f"{prob[1]}%")
     st.metric("Odd", round((100/float(prob[1])), 2))
 with col4:
-    st.metric(team2, prob[2])
+    st.metric(team2, f"{prob[2]}%")
     st.metric("Odd", round((100/float(prob[2])), 2))
 col5.image(teamsStats.loc[team2, "LinkBandeiraGrande"], width=100)
 st.markdown("---")
