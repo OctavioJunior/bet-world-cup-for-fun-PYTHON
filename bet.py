@@ -11,8 +11,10 @@ st.title("Previsão dos jogos da Copa do Mundo 2022")
 
 teamsStats = pd.read_excel(
     "data/DadosCopaDoMundoQatar2022.xlsx", sheet_name="selecoes", index_col=0)
+# r"C:\Users\OcJunior\Desktop\PROJETOS ESTUDO\PROJETOS ONLINE\PRECISÕES COPA 22 - PYTHON\previsoes-copa-22-python\data\DadosCopaDoMundoQatar2022.xlsx", sheet_name="selecoes", index_col=0)
 matches = pd.read_excel(
     "data/DadosCopaDoMundoQatar2022.xlsx", sheet_name="jogos")
+# r"C:\Users\OcJunior\Desktop\PROJETOS ESTUDO\PROJETOS ONLINE\PRECISÕES COPA 22 - PYTHON\previsoes-copa-22-python\data\DadosCopaDoMundoQatar2022.xlsx", sheet_name="jogos")
 rankFifa = teamsStats["PontosRankingFIFA"]
 
 rankMin, rankMax = min(rankFifa), max(rankFifa)
@@ -28,8 +30,9 @@ def AvgPoisson(team1, team2):
     strengthTeam1 = strength[team1]
     strengthTeam2 = strength[team2]
     avgGoasl = 2.82
-    avgGoaslTeam1 = (avgGoasl * strengthTeam1)/(strengthTeam1 + strengthTeam2)
-    avgGoaslTeam2 = avgGoasl - avgGoaslTeam1
+    avgGoaslTeam1 = (avgGoasl * strengthTeam1) / \
+        (strengthTeam1 + strengthTeam2)
+    avgGoaslTeam2 = (avgGoasl - avgGoaslTeam1)
 
     return [avgGoaslTeam1, avgGoaslTeam2]
 
@@ -58,9 +61,16 @@ def ProbabilitiesMatch(team1, team2):
     matriz.index = pd.MultiIndex.from_product([[team1], matriz.index])
     matriz.columns = pd.MultiIndex.from_product([[team2], matriz.columns])
 
+    avgTeam1 = round(avgTeam1, 2)
+    avgTeam2 = round(avgTeam2, 2)
+
+    resultado = "{} {} x {} {}".format(
+        team1, int(round(avgTeam1, 0)), int(round(avgTeam2, 0)), team2)
+
     output = {"Seleção 1": team1, "Gols Seleção 1": avgTeam1,
               "Seleção 2": team2, "Gols Seleção 2": avgTeam2,
-              "probabilidades": probabilitiesPercent}
+              "probabilidades": probabilitiesPercent, "mat": matriz,
+              "Resultado": resultado}
 
     return output
 
@@ -88,20 +98,18 @@ matches["Derrota"] = None
 
 # matches.to_excel("Probabilidades da Copa 2022")
 
-# print(Match("Brasil", "Sérvia"))
-
 listTeamHome = teamsStats.index.tolist()
 listTeamHome.sort()
 listTeamAway = listTeamHome.copy()
 
 j1, j2 = st.columns(2)
-team1 = j1.selectbox('Escolha a primeira Seleção', listTeamHome)
+team1 = j1.selectbox("Escolha a primeira Seleção", listTeamHome)
 listTeamAway.remove(team1)
-team2 = j2.selectbox('Escolha a segunda Seleção', listTeamAway, index=1)
-st.markdown('---')
+team2 = j2.selectbox("Escolha a segunda Seleção", listTeamAway, index=1)
+st.markdown("---")
 
 matches = ProbabilitiesMatch(team1, team2)
-prob = matches['probabilidades']
+prob = matches["probabilidades"]
 
 col1, col2, col3, col4, col5, col6 = st.columns(6)
 col1.image(teamsStats.loc[team1, 'LinkBandeiraGrande'])
@@ -114,7 +122,11 @@ with col3:
 with col4:
     st.metric(team2, prob[2])
     st.metric("Odd", round((100/float(prob[2])), 2))
-col5.image(teamsStats.loc[team2, 'LinkBandeiraGrande'])
-st.markdown('---')
+col5.image(teamsStats.loc[team2, "LinkBandeiraGrande"])
+st.markdown("---")
 
-# print(ProbabilitiesMatch("Brasil", "Sérvia"))
+result = matches["Resultado"]
+st.header(result)
+
+
+# print(ProbabilitiesMatch("Alemanha", "Coreia do Sul"))
