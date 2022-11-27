@@ -10,11 +10,11 @@ st.set_page_config(
 st.title("Previsão dos jogos da Copa do Mundo 2022")
 
 teamsStats = pd.read_excel(
-    "data/DadosCopaDoMundoQatar2022.xlsx", sheet_name="selecoes", index_col=0)
-# r"C:\Users\OcJunior\Desktop\PROJETOS ESTUDO\PROJETOS ONLINE\PRECISÕES COPA 22 - PYTHON\previsoes-copa-22-python\data\DadosCopaDoMundoQatar2022.xlsx", sheet_name="selecoes", index_col=0)
+    # "data/DadosCopaDoMundoQatar2022.xlsx", sheet_name="selecoes", index_col=0)
+    r"C:\Users\OcJunior\Desktop\PROJETOS ESTUDO\PROJETOS ONLINE\PRECISÕES COPA 22 - PYTHON\previsoes-copa-22-python\data\DadosCopaDoMundoQatar2022.xlsx", sheet_name="selecoes", index_col=0)
 matches = pd.read_excel(
-    "data/DadosCopaDoMundoQatar2022.xlsx", sheet_name="jogos")
-# r"C:\Users\OcJunior\Desktop\PROJETOS ESTUDO\PROJETOS ONLINE\PRECISÕES COPA 22 - PYTHON\previsoes-copa-22-python\data\DadosCopaDoMundoQatar2022.xlsx", sheet_name="jogos")
+    # "data/DadosCopaDoMundoQatar2022.xlsx", sheet_name="jogos")
+    r"C:\Users\OcJunior\Desktop\PROJETOS ESTUDO\PROJETOS ONLINE\PRECISÕES COPA 22 - PYTHON\previsoes-copa-22-python\data\DadosCopaDoMundoQatar2022.xlsx", sheet_name="jogos")
 rankFifa = teamsStats["PontosRankingFIFA"]
 
 rankMin, rankMax = min(rankFifa), max(rankFifa)
@@ -112,7 +112,7 @@ matches = ProbabilitiesMatch(team1, team2)
 prob = matches["probabilidades"]
 
 col1, col2, col3, col4, col5, col6 = st.columns(6)
-col1.image(teamsStats.loc[team1, 'LinkBandeiraGrande'])
+col1.image(teamsStats.loc[team1, 'LinkBandeiraGrande'], width=100)
 with col2:
     st.metric(team1, prob[0])
     st.metric("Odd", round((100/float(prob[0])), 2))
@@ -122,7 +122,7 @@ with col3:
 with col4:
     st.metric(team2, prob[2])
     st.metric("Odd", round((100/float(prob[2])), 2))
-col5.image(teamsStats.loc[team2, "LinkBandeiraGrande"])
+col5.image(teamsStats.loc[team2, "LinkBandeiraGrande"], width=100)
 st.markdown("---")
 
 result = matches["Resultado"]
