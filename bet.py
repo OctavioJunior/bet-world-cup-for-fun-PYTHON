@@ -16,25 +16,21 @@ matches = pd.read_excel(
     "data/DadosCopaDoMundoQatar2022.xlsx", sheet_name="jogos")
 # r"C:\Users\OcJunior\Desktop\PROJETOS ESTUDO\PROJETOS ONLINE\PRECISÕES COPA 22 - PYTHON\previsoes-copa-22-python\data\DadosCopaDoMundoQatar2022.xlsx", sheet_name="jogos")
 rankFifa = teamsStats["PontosRankingFIFA"]
+forceOff = teamsStats["GO"]
+forceDef = teamsStats["GF"]
 
-rankMin, rankMax = min(rankFifa), max(rankFifa)
-valueRankMin, valueRankMax = 0.15, 1
+avgGoaslWC = 1.27
 
-beta1 = (valueRankMax - valueRankMin)/(rankMax - rankMin)
-beta0 = valueRankMax - (rankMax * beta1)
-
-strength = beta0 + beta1*rankFifa
+strength = ((forceOff/avgGoaslWC)*(forceDef/avgGoaslWC)*avgGoaslWC)
 
 
 def AvgPoisson(team1, team2):
-    strengthTeam1 = strength[team1]
-    strengthTeam2 = strength[team2]
-    avgGoasl = 2.82
-    avgGoaslTeam1 = (avgGoasl * strengthTeam1) / \
-        (strengthTeam1 + strengthTeam2)
-    avgGoaslTeam2 = (avgGoasl - avgGoaslTeam1)
+    strengthTeam1 = ((forceOff[team1]/avgGoaslWC) *
+                     (forceDef[team2]/avgGoaslWC)*avgGoaslWC)
+    strengthTeam2 = ((forceOff[team2]/avgGoaslWC) *
+                     (forceDef[team1]/avgGoaslWC)*avgGoaslWC)
 
-    return [avgGoaslTeam1, avgGoaslTeam2]
+    return [strengthTeam1, strengthTeam2]
 
 
 def PoissonDist(avg):
@@ -120,4 +116,4 @@ result = matches["Resultado"]
 st.header(result)
 
 
-# print(ProbabilitiesMatch("Alemanha", "Coreia do Sul"))
+# print(ProbabilitiesMatch("Brasil", "Suíça"))
