@@ -19,7 +19,7 @@ rankFifa = teamsStats["PontosRankingFIFA"]
 forceOff = teamsStats["GO"]
 forceDef = teamsStats["GF"]
 
-avgGoaslWC = 1.27
+avgGoaslWC = 1.25
 
 strength = ((forceOff/avgGoaslWC)*(forceDef/avgGoaslWC)*avgGoaslWC)
 
@@ -116,4 +116,4 @@ result = matches["Resultado"]
 st.header(result)
 
 
-# print(ProbabilitiesMatch("Brasil", "Suíça"))
+# print(ProbabilitiesMatch("Argentina", "Austrália"))
